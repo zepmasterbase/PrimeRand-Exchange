@@ -1,48 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PrimeRand Exchange — Trusted Trades, Every Time</title>
-  <meta name="description" content="Trade crypto safely with PrimeRand Exchange. Live rates, VIP benefits, and secure P2P crypto trading.">
-  <style>
-    :root {
-      --bg: #070b14;
-      --card: #0f1629;
-      --accent: #4da6ff;
-      --vip: #ffcb00;
-      --text: #e9ecf1;
-      --muted: #9aa4b2;
-    }
-    * { box-sizing: border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
-    body { background: radial-gradient(1200px 600px at 20% -10%, #0c1a3a, transparent), radial-gradient(800px 400px at 90% 10%, #07142f, transparent), var(--bg); color: var(--text); min-height: 100vh;}
-    header {padding:60px 20px 30px; text-align:center;}
-    header h1 {font-size:clamp(2.2rem,5vw,3.5rem); letter-spacing:0.5px; margin-bottom:10px; text-shadow:0 0 25px rgba(77,166,255,0.35);}
-    header p {color: var(--muted); font-size:1.1rem;}
-    .glow-line {width:160px; height:3px; margin:25px auto; background:linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow:0 0 15px var(--accent);}
-    .container {max-width:1200px; margin:0 auto; padding:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px;}
-    .card {background: linear-gradient(180deg, #111a33, #0b1224); border-radius:18px; padding:28px; position:relative; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05); transform-style: preserve-3d; transition: transform 0.4s ease, box-shadow 0.4s ease;}
-    .card::before {content:""; position:absolute; inset:-2px; border-radius:18px; background: linear-gradient(120deg, transparent, rgba(77,166,255,0.25), transparent); opacity:0.6; filter: blur(6px); pointer-events:none;}
-    .card:hover {transform: translateY(-6px) rotateX(2deg) rotateY(-2deg); box-shadow:0 25px 60px rgba(0,0,0,0.7),0 0 30px rgba(77,166,255,0.25);}
-    .card h2 {margin-top:0;margin-bottom:10px;color: var(--accent); letter-spacing:0.3px;}
-    .rate-box {font-size:2.1rem;font-weight:700;margin:12px 0;color:#fff;text-shadow:0 0 18px rgba(77,166,255,0.35);}
-    .muted {color:var(--muted); font-size:0.95rem;}
-    .pill {display:inline-block;padding:6px 12px;border-radius:999px;background:rgba(77,166,255,0.12);color: var(--accent); font-size:0.85rem; margin-top:6px;}
-    .btn {padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:600;letter-spacing:0.3px;background: linear-gradient(135deg, #4da6ff, #3b7bff);color:#001027; box-shadow:0 0 20px rgba(77,166,255,0.45); transition: transform 0.2s ease, box-shadow 0.2s ease;}
-    .btn:hover {transform: translateY(-2px) scale(1.02); box-shadow:0 0 30px rgba(77,166,255,0.7);}
-    .btn.alt {background: linear-gradient(135deg, #7cffc4, #42d39f); box-shadow: 0 0 20px rgba(124,255,196,0.45);}
-    footer {text-align:center; padding:40px 20px 60px; color: var(--muted); font-size:0.9rem;}
-    .pulse {animation: pulse 2.5s infinite;}
-    @keyframes pulse {0%{box-shadow:0 0 10px rgba(77,166,255,0.3);}50%{box-shadow:0 0 30px rgba(77,166,255,0.7);}100%{box-shadow:0 0 10px rgba(77,166,255,0.3);}}
-    input, select {padding:10px;border-radius:10px;background:#050a16;color:#fff;border:1px solid rgba(255,255,255,0.1);}
-    label {display:flex;align-items:center; gap:8px; margin-top:12px;}
-    table {width:100%; border-collapse: collapse; margin-top:20px;}
-    th, td {padding:12px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.1);}
-    th {color: var(--accent);}
-    .vip-badge {background: var(--vip); color:#001027; padding:4px 10px; border-radius:12px; font-weight:bold; font-size:0.85rem; margin-left:6px;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimeRand Exchange — Trusted Trades, Every Time</title>
+<meta name="description" content="Trade crypto safely with PrimeRand Exchange. Fast, reliable, and transparent P2P crypto trading for South Africans.">
+<style>
+  :root {
+    --bg: #070b14;
+    --card: #0f1629;
+    --neon: #4da6ff;
+    --accent: #7cffc4;
+    --text: #e9ecf1;
+    --muted: #9aa4b2;
+    --vip: #fdd835;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
+    background: radial-gradient(1200px 600px at 20% -10%, #0c1a3a, transparent),
+                radial-gradient(800px 400px at 90% 10%, #07142f, transparent),
+                var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 60px 20px 30px;
+    text-align: center;
+  }
+  header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 25px rgba(77,166,255,0.35);
+  }
+  header p { color: var(--muted); font-size: 1.1rem; }
+  .glow-line {
+    width: 160px; height: 3px; margin: 25px auto;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    box-shadow: 0 0 15px var(--neon);
+  }
+
+  .container {
+    max-width: 1200px; margin: 0 auto; padding: 20px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, #111a33, #0b1224);
+    border-radius: 18px; padding: 28px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: -2px; border-radius: 18px;
+    background: linear-gradient(120deg, transparent, rgba(77,166,255,0.25), transparent);
+    opacity: 0.6; filter: blur(6px); pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 30px rgba(77,166,255,0.25);
+  }
+  .card h2 { margin-top: 0; margin-bottom: 10px; color: var(--accent); letter-spacing: 0.3px; }
+  .rate-box { font-size: 2rem; font-weight: 700; margin: 8px 0; color: #fff; text-shadow: 0 0 18px rgba(124,255,196,0.35); }
+  .muted { color: var(--muted); font-size: 0.95rem; }
+  .pill { display: inline-block; padding: 6px 12px; border-radius: 999px; background: rgba(77,166,255,0.12); color: var(--neon); font-size: 0.85rem; margin-top: 6px; }
+  .pulse { animation: pulse 2.5s infinite; }
+  @keyframes pulse { 0% { box-shadow:0 0 10px rgba(77,166,255,0.3);}50%{box-shadow:0 0 30px rgba(77,166,255,0.7);}100%{box-shadow:0 0 10px rgba(77,166,255,0.3);} }
+
+  .btn { padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:600; letter-spacing:0.3px; background:linear-gradient(135deg,#4da6ff,#3b7bff); color:#001027; box-shadow:0 0 20px rgba(77,166,255,0.45); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .btn:hover { transform: translateY(-2px) scale(1.02); box-shadow:0 0 30px rgba(77,166,255,0.7); }
+  .btn.alt { background: linear-gradient(135deg,#7cffc4,#42d39f); box-shadow:0 0 20px rgba(124,255,196,0.45); }
+
+  footer { text-align:center; padding:40px 20px 60px; color:var(--muted); font-size:0.9rem; }
+
+  .vip-toggle { display:flex; align-items:center; gap:10px; margin-top:10px; cursor:pointer; }
+  .vip-toggle input { transform: scale(1.5); cursor:pointer; }
+
+  table { width:100%; border-collapse: collapse; margin-top:12px; }
+  th, td { border: 1px solid rgba(255,255,255,0.1); padding:8px; text-align:center; }
+  th { background: rgba(77,166,255,0.15); color:#fff; }
+</style>
 </head>
 <body>
+
 <header>
   <h1>PrimeRand Exchange</h1>
   <p>Trusted Trades, Every Time</p>
@@ -50,78 +97,73 @@
 </header>
 
 <section class="container">
-  <!-- Live Rate + Calculator Card -->
-  <div class="card pulse">
-    <h2>Live Crypto Rate Calculator <span id="vipBadge" class="vip-badge" style="display:none;">VIP</span></h2>
-    <div class="muted">Enter amount in ZAR (min R950 ≈ $50)</div>
-    <input type="number" id="zarInput" value="950" min="950" oninput="updateAll()">
 
-    <label>
-      <input type="checkbox" id="vipToggle" onchange="updateAll()">
-      Activate VIP Rates
-    </label>
+<!-- Crypto Calculator + VIP Toggle -->
+<div class="card pulse">
+  <h2>Live Crypto Rate Calculator</h2>
+  <div class="muted">Enter amount in ZAR (min $50 equivalent)</div>
 
-    <div style="margin-top:12px;">
-      <div class="muted">Base Market Rate (ZAR → USD)</div>
-      <div class="rate-box" id="baseRate">Loading...</div>
-    </div>
+  <input type="number" id="zarAmount" value="950" min="950" style="margin-top:12px;padding:10px;border-radius:10px;background:#050a16;color:#fff;border:1px solid rgba(255,255,255,0.1);" oninput="updateCalculator()"/>
 
-    <div style="margin-top:12px;">
-      <div class="muted">PrimeRand Exchange Rate (+4% / VIP Adjusted)</div>
-      <div class="rate-box" id="primeRate">Loading...</div>
-    </div>
-
-    <div style="margin-top:12px;">
-      <div class="muted">You Pay (USD Equivalent)</div>
-      <div class="rate-box" id="usdTotal">—</div>
-    </div>
-
-    <div style="margin-top:12px;">
-      <div class="muted">Estimated Crypto Amount</div>
-      <div class="rate-box" id="cryptoEstimate">—</div>
-    </div>
+  <!-- VIP toggle -->
+  <div class="vip-toggle">
+    <label>💎 VIP Pricing</label>
+    <input type="checkbox" id="vipToggle" onchange="updateCalculator()"/>
   </div>
 
-  <!-- VIP Info Card -->
-  <div class="card">
-    <h2>VIP Membership Benefits</h2>
-    <ul class="muted">
-      <li>Lower PrimeRand spread: 2.25% vs 4%</li>
-      <li>Higher daily limit: $5,000/day</li>
-      <li>Priority processing & faster release</li>
-      <li>Direct admin priority</li>
-      <li>Exclusive VIP badge & neon highlight</li>
-    </ul>
-    <span class="pill">Become a VIP today!</span>
+  <div style="margin-top:18px;">
+    <div class="muted">Base Market Rate (ZAR → USD)</div>
+    <div class="rate-box" id="baseRate">Loading...</div>
   </div>
 
-  <!-- Actions -->
-  <div class="card">
-    <h2>Start a Trade</h2>
-    <p class="muted">Submit your trade details and payment proof, then chat with our admin to complete your transaction.</p>
-    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-      <a class="btn" href="https://forms.gle/GMuULHC3A1f2XATd8" target="_blank">Submit Trade Form</a>
-      <a class="btn alt" href="https://t.me/+zU0iozk8eJQ2MDM0" target="_blank">Join Trading Channel</a>
-    </div>
+  <div style="margin-top:12px;">
+    <div class="muted">PrimeRand Exchange Rate</div>
+    <div class="rate-box" id="primeRate">Loading...</div>
   </div>
+
+  <div style="margin-top:18px;">
+    <div class="muted">You Will Receive</div>
+    <div class="rate-box" id="cryptoReceived">—</div>
+    <span class="pill">Includes 4% service markup (or VIP discount)</span>
+  </div>
+</div>
+
+<!-- VIP Info Card -->
+<div class="card">
+  <h2>💎 VIP Membership</h2>
+  <ul class="muted">
+    <li>Higher daily limits: $5,000+</li>
+    <li>Lower spread: +2% instead of +4%</li>
+    <li>Priority processing & faster release</li>
+    <li>Exclusive chat support</li>
+  </ul>
+  <span class="pill">Monthly VIP Fee: R750 – R1000</span>
+</div>
+
+<!-- Start Trade -->
+<div class="card">
+  <h2>Start a Trade</h2>
+  <p class="muted">
+    Submit your trade details and payment proof, then chat with our admin to complete your transaction.
+  </p>
+  <div style="margin-top:14px;">
+    <a class="btn" href="https://forms.gle/GMuULHC3A1f2XATd8" target="_blank">Submit Trade Form</a>
+    <a class="btn alt" href="https://t.me/+zU0iozk8eJQ2MDM0" target="_blank">Join Trading Channel</a>
+  </div>
+</div>
+
 </section>
 
 <!-- Live Rates Table -->
 <section class="container">
-  <div class="card">
+  <div class="card pulse">
     <h2>Live Rates Table</h2>
     <table>
       <thead>
-        <tr>
-          <th>Currency</th>
-          <th>Base ZAR/USD</th>
-          <th>PrimeRand Rate (+4% / VIP)</th>
-          <th>You Pay for R$ Input</th>
-          <th>Estimated Crypto Amount</th>
-        </tr>
+        <tr><th>Currency</th><th>USD Price</th><th>PrimeRand Rate (+4%)</th><th>Receive for Your ZAR</th></tr>
       </thead>
-      <tbody id="liveTableBody">
-        <tr><td colspan="5">Loading...</td></tr>
+      <tbody id="liveRatesTable">
+        <tr><td colspan="4">Loading...</td></tr>
       </tbody>
     </table>
   </div>
@@ -132,74 +174,77 @@
 </footer>
 
 <script>
-const VIP_SPREAD = 0.0225;
-const STANDARD_SPREAD = 0.04;
-const MIN_ZAR = 950;
+  const MIN_USD = 50;
+  const MARKUP = 0.04;
+  const VIP_SPREAD = 0.02;
+  let usdZar = 0;
+  let cryptoUsd = {USDT:1, USDC:1, BTC:0, ETH:0};
 
-let usdZarRate = 0;
-let cryptoUsdPrice = { USDT: 1, USDC: 1, BTC: 0, ETH: 0 };
+  async function fetchRates() {
+    try {
+      // USD/ZAR
+      const fx = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=ZAR");
+      const fxData = await fx.json();
+      usdZar = fxData.rates.ZAR;
 
-async function fetchRates() {
-  try {
-    const fx = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=ZAR").then(r => r.json());
-    usdZarRate = fx.rates.ZAR;
-
-    const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd").then(r=>r.json());
-    cryptoUsdPrice.BTC = crypto.bitcoin.usd;
-    cryptoUsdPrice.ETH = crypto.ethereum.usd;
-    cryptoUsdPrice.USDT = 1;
-    cryptoUsdPrice.USDC = 1;
-
-    updateAll();
-  } catch(e){ console.error(e);}
-}
-
-// Calculate all outputs
-function updateAll(){
-  let zarInput = parseFloat(document.getElementById("zarInput").value);
-  if(isNaN(zarInput) || zarInput<MIN_ZAR){ zarInput=MIN_ZAR; document.getElementById("zarInput").value=MIN_ZAR;}
-
-  const vipOn = document.getElementById("vipToggle").checked;
-  document.getElementById("vipBadge").style.display = vipOn?"inline-block":"none";
-
-  const spread = vipOn ? VIP_SPREAD : STANDARD_SPREAD;
-
-  const baseRate = usdZarRate;
-  const primeRate = baseRate * (1 + spread);
-
-  const usdTotal = zarInput / primeRate;
-
-  document.getElementById("baseRate").textContent = "R "+baseRate.toFixed(2)+" / USD";
-  document.getElementById("primeRate").textContent = "R "+primeRate.toFixed(2)+" / USD";
-  document.getElementById("usdTotal").textContent = "$ "+usdTotal.toFixed(2);
-
-  // Estimate BTC/ETH amount
-  const btcAmount = usdTotal / cryptoUsdPrice.BTC;
-  const ethAmount = usdTotal / cryptoUsdPrice.ETH;
-  document.getElementById("cryptoEstimate").textContent = 
-    `BTC: ${btcAmount.toFixed(6)} | ETH: ${ethAmount.toFixed(5)} | USDT: ${usdTotal.toFixed(2)} | USDC: ${usdTotal.toFixed(2)}`;
-
-  // Update live table
-  const tbody = document.getElementById("liveTableBody");
-  tbody.innerHTML="";
-  for(const c of ["USDT","USDC","BTC","ETH"]){
-    const price = cryptoUsdPrice[c];
-    const baseZar = price * usdZarRate;
-    const primeZar = baseZar * (1 + spread);
-    const pay = zarInput / primeZar;
-    const cryptoAmt = (zarInput / primeZar) / price;
-    const row = `<tr>
-      <td>${c}</td>
-      <td>R ${baseZar.toFixed(2)}</td>
-      <td>R ${primeZar.toFixed(2)}</td>
-      <td>$ ${pay.toFixed(2)}</td>
-      <td>${cryptoAmt.toFixed(6)}</td>
-    </tr>`;
-    tbody.innerHTML += row;
+      // Crypto prices
+      const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
+      const data = await crypto.json();
+      cryptoUsd.BTC = data.bitcoin.usd;
+      cryptoUsd.ETH = data.ethereum.usd;
+    } catch(e){console.error(e);}
+    updateCalculator();
+    updateLiveTable();
   }
-}
 
-// Auto-update every 30 seconds
-fetchRates();
-setInterval(fetchRates, 30000);
+  function updateCalculator(){
+    let zar = parseFloat(document.getElementById("zarAmount").value);
+    if(isNaN(zar) || zar<usdZar*MIN_USD){ zar = usdZar*MIN_USD; document.getElementById("zarAmount").value = zar.toFixed(2); }
+
+    const vip = document.getElementById("vipToggle").checked;
+    const spread = vip ? VIP_SPREAD : MARKUP;
+
+    const usdBase = zar / usdZar;
+    const usdPrime = usdBase / (1+spread); // effective USD for user
+
+    const receive = {
+      USDT: usdPrime,
+      USDC: usdPrime,
+      BTC: usdPrime/cryptoUsd.BTC,
+      ETH: usdPrime/cryptoUsd.ETH
+    };
+
+    document.getElementById("baseRate").textContent = "R " + usdZar.toFixed(2) + " / USD";
+    document.getElementById("primeRate").textContent = "R " + (usdZar*(1+spread)).toFixed(2) + " / USD";
+    document.getElementById("cryptoReceived").innerHTML =
+      `USDT: ${receive.USDT.toFixed(4)}<br>USDC: ${receive.USDC.toFixed(4)}<br>BTC: ${receive.BTC.toFixed(6)}<br>ETH: ${receive.ETH.toFixed(6)}`;
+  }
+
+  function updateLiveTable(){
+    const vip = document.getElementById("vipToggle").checked;
+    const spread = vip ? VIP_SPREAD : MARKUP;
+    const zar = parseFloat(document.getElementById("zarAmount").value);
+    const usdBase = zar / usdZar;
+    const usdPrime = usdBase / (1+spread);
+
+    const tbody = document.getElementById("liveRatesTable");
+    tbody.innerHTML = "";
+    ["USDT","USDC","BTC","ETH"].forEach(c => {
+      let price = cryptoUsd[c];
+      if(!price) price = 1;
+      let prime = price*(1+spread);
+      let receive = (zar/prime).toFixed(c==="BTC"||c==="ETH"?6:4);
+      tbody.innerHTML += `<tr>
+        <td>${c}</td>
+        <td>${price.toFixed(2)}</td>
+        <td>${prime.toFixed(2)}</td>
+        <td>${receive}</td>
+      </tr>`;
+    });
+  }
+
+  fetchRates();
+  setInterval(fetchRates,30000); // auto update every 30s
 </script>
+</body>
+</html>
