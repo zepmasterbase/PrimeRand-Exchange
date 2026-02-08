@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrimeRand Exchange — Trusted Trades, Every Time</title>
-<meta name="description" content="Trade crypto safely with PrimeRand Exchange. Fast, reliable, and transparent P2P crypto trading.">
+<meta name="description" content="Trade crypto safely with PrimeRand Exchange. Fast, secure, and transparent P2P crypto trading.">
 <style>
 :root {
   --bg: #070b14;
@@ -15,7 +15,6 @@
   --muted: #9aa4b2;
   --vip: #fdd835;
 }
-
 * { box-sizing: border-box; }
 body {
   margin:0;
@@ -26,7 +25,6 @@ body {
   color: var(--text);
   min-height: 100vh;
 }
-
 header { text-align:center; padding:60px 20px 30px; }
 header h1 { font-size:clamp(2.2rem,5vw,3.5rem); margin-bottom:10px; text-shadow:0 0 25px rgba(77,166,255,0.35);}
 header p { color: var(--muted); font-size:1.1rem; }
@@ -64,6 +62,10 @@ header p { color: var(--muted); font-size:1.1rem; }
 
 footer { text-align:center; padding:40px 20px 60px; color:var(--muted); font-size:0.9rem; }
 
+.role-toggle { display:flex; gap:12px; margin-top:12px; }
+.role-toggle button { flex:1; padding:10px 0; border:none; border-radius:10px; cursor:pointer; font-weight:600; background:#111a33; color:var(--text); transition:0.3s; }
+.role-toggle button.active { background:var(--neon); color:#001027; box-shadow:0 0 15px var(--neon); }
+
 .vip-toggle { display:flex; align-items:center; gap:10px; margin-top:10px; cursor:pointer; }
 .vip-toggle input { transform: scale(1.5); cursor:pointer; }
 
@@ -85,18 +87,23 @@ th { background: rgba(77,166,255,0.15); color:#fff; }
 <!-- Crypto Calculator -->
 <div class="card pulse">
   <h2>Crypto Calculator</h2>
-  <div class="muted">Enter your ZAR amount (min $50 equivalent)</div>
-  <input type="number" id="zarAmount" value="950" min="950" style="margin-top:12px;padding:10px;border-radius:10px;background:#050a16;color:#fff;border:1px solid rgba(255,255,255,0.1);">
+  <div class="muted">Select your role:</div>
+  <div class="role-toggle">
+    <button id="buyRole" class="active" onclick="setRole('buy')">Buy Crypto</button>
+    <button id="sellRole" onclick="setRole('sell')">Sell Crypto</button>
+  </div>
+
+  <input type="number" id="amountInput" value="950" min="950" style="margin-top:12px;padding:10px;border-radius:10px;background:#050a16;color:#fff;border:1px solid rgba(255,255,255,0.1);">
 
   <div class="vip-toggle">
-    <label>💎 VIP Pricing</label>
+    <label>💎 VIP Pricing (Buy Only)</label>
     <input type="checkbox" id="vipToggle">
   </div>
 
   <div style="margin-top:18px;">
-    <div class="muted">You Will Receive</div>
+    <div class="muted" id="receiveLabel">You Will Receive</div>
     <div class="rate-box" id="cryptoReceived">—</div>
-    <span class="pill">Includes service markup (4% standard / 2% VIP)</span>
+    <span class="pill">Includes service markup (Buy: +4% / VIP: +2%; Sell: -5%)</span>
   </div>
 </div>
 
@@ -145,11 +152,13 @@ th { background: rgba(77,166,255,0.15); color:#fff; }
 
 <script>
 const MIN_USD = 50;
-const MARKUP = 0.04; // standard
+const BUY_MARKUP = 0.04;
 const VIP_SPREAD = 0.02;
+const SELL_FEE = 0.05;
 
 let usdZar = 0;
 let cryptoUsd = {USDT:1, USDC:1, BTC:0, ETH:0};
+let currentRole = 'buy';
 
 // Fetch FX and crypto prices
 async function fetchRates(){
@@ -168,59 +177,99 @@ async function fetchRates(){
   } catch(e){ console.error("Error fetching rates", e);}
 }
 
-// Update calculator output
-function updateCalculator(){
-  let zar = parseFloat(document.getElementById("zarAmount").value);
-  if(isNaN(zar) || zar < usdZar*MIN_USD){
-    zar = usdZar*MIN_USD;
-    document.getElementById("zarAmount").value = zar.toFixed(2);
+// Set Buy/Sell role
+function setRole(role){
+  currentRole = role;
+  document.getElementById('buyRole').classList.toggle('active', role==='buy');
+  document.getElementById('sellRole').classList.toggle('active', role==='sell');
+
+  const input = document.getElementById('amountInput');
+  const label = document.getElementById('receiveLabel');
+
+  if(role==='buy'){
+    label.innerText = "You Will Receive Crypto";
+    input.min = (usdZar*MIN_USD).toFixed(2);
+    input.value = input.value || (usdZar*MIN_USD).toFixed(2);
+  } else {
+    label.innerText = "You Will Receive ZAR";
+    input.min = MIN_USD;
+    input.value = input.value || MIN_USD;
   }
 
-  const vip = document.getElementById("vipToggle").checked;
-  const spread = vip ? VIP_SPREAD : MARKUP;
-
-  const receive = {
-    USDT: zar / (cryptoUsd.USDT * usdZar * (1+spread)),
-    USDC: zar / (cryptoUsd.USDC * usdZar * (1+spread)),
-    BTC: zar / (cryptoUsd.BTC * usdZar * (1+spread)),
-    ETH: zar / (cryptoUsd.ETH * usdZar * (1+spread))
-  };
-
-  document.getElementById("cryptoReceived").innerHTML =
-    `USDT: ${receive.USDT.toFixed(4)}<br>`+
-    `USDC: ${receive.USDC.toFixed(4)}<br>`+
-    `BTC: ${receive.BTC.toFixed(6)}<br>`+
-    `ETH: ${receive.ETH.toFixed(6)}`;
+  updateCalculator();
+  updateLiveTable();
 }
 
-// Update live rates table
+// Update calculator
+function updateCalculator(){
+  let amt = parseFloat(document.getElementById("amountInput").value);
+  if(currentRole==='buy' && (isNaN(amt) || amt < usdZar*MIN_USD)) amt = usdZar*MIN_USD;
+  if(currentRole==='sell' && (isNaN(amt) || amt < MIN_USD)) amt = MIN_USD;
+  document.getElementById("amountInput").value = amt.toFixed(2);
+
+  const vip = document.getElementById("vipToggle").checked;
+  const spread = vip ? VIP_SPREAD : BUY_MARKUP;
+
+  let output = {};
+  if(currentRole==='buy'){
+    output.USDT = amt / (cryptoUsd.USDT*usdZar*(1+spread));
+    output.USDC = amt / (cryptoUsd.USDC*usdZar*(1+spread));
+    output.BTC = amt / (cryptoUsd.BTC*usdZar*(1+spread));
+    output.ETH = amt / (cryptoUsd.ETH*usdZar*(1+spread));
+    document.getElementById("cryptoReceived").innerHTML =
+      `USDT: ${output.USDT.toFixed(4)}<br>`+
+      `USDC: ${output.USDC.toFixed(4)}<br>`+
+      `BTC: ${output.BTC.toFixed(6)}<br>`+
+      `ETH: ${output.ETH.toFixed(6)}`;
+  } else {
+    // Sell: deduct 5%
+    output.USDT = amt*usdZar*(1-SELL_FEE);
+    output.USDC = amt*usdZar*(1-SELL_FEE);
+    output.BTC = amt*usdZar*(1-SELL_FEE);
+    output.ETH = amt*usdZar*(1-SELL_FEE);
+    document.getElementById("cryptoReceived").innerHTML =
+      `USDT: R ${output.USDT.toFixed(2)}<br>`+
+      `USDC: R ${output.USDC.toFixed(2)}<br>`+
+      `BTC: R ${output.BTC.toFixed(2)}<br>`+
+      `ETH: R ${output.ETH.toFixed(2)}`;
+  }
+}
+
+// Update Live Rates Table
 function updateLiveTable(){
   const vip = document.getElementById("vipToggle").checked;
-  const spread = vip ? VIP_SPREAD : MARKUP;
-  const zar = parseFloat(document.getElementById("zarAmount").value);
+  const spread = vip ? VIP_SPREAD : BUY_MARKUP;
+  const amt = parseFloat(document.getElementById("amountInput").value);
 
   const tbody = document.getElementById("liveRatesTable");
   tbody.innerHTML = "";
 
   ["USDT","USDC","BTC","ETH"].forEach(c=>{
     let price = cryptoUsd[c] || 1;
-    let prime = price * usdZar * (1+spread);
-    let receive = (zar / prime).toFixed(c==="BTC"||c==="ETH"?6:4);
+    let primeRate, receive;
+    if(currentRole==='buy'){
+      primeRate = price*usdZar*(1+spread);
+      receive = (amt/primeRate).toFixed(c==="BTC"||c==="ETH"?6:4);
+    } else {
+      primeRate = price*usdZar;
+      receive = (amt*usdZar*(1-SELL_FEE)).toFixed(2);
+    }
     tbody.innerHTML += `<tr>
       <td>${c}</td>
-      <td>R ${prime.toFixed(2)}</td>
+      <td>R ${primeRate.toFixed(2)}</td>
       <td>${receive}</td>
     </tr>`;
   });
 }
 
-// Initial fetch + auto-update every 30s
+// Initial fetch and auto-update
 fetchRates();
 setInterval(fetchRates,30000);
 
 // Live input listeners
-document.getElementById("zarAmount").addEventListener("input", updateCalculator);
+document.getElementById("amountInput").addEventListener("input", updateCalculator);
 document.getElementById("vipToggle").addEventListener("change", updateCalculator);
+
 </script>
 </body>
 </html>
