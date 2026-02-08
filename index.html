@@ -1,119 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PrimeRand Exchange – Trusted Trades, Every Time</title>
-  <meta name="description" content="Trade crypto safely with PrimeRand Exchange. Fast, reliable, and transparent P2P crypto trading for South Africans.">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <title>PrimeRand Exchange — Trusted Trades, Every Time</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    :root {
+      --bg: #070b14;
+      --card: #0f1629;
+      --neon: #4da6ff;
+      --accent: #7cffc4;
+      --text: #e9ecf1;
+      --muted: #9aa4b2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
+      background: radial-gradient(1200px 600px at 20% -10%, #0c1a3a, transparent),
+                  radial-gradient(800px 400px at 90% 10%, #07142f, transparent),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 60px 20px 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 25px rgba(77,166,255,0.35);
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .glow-line {
+      width: 160px;
+      height: 3px;
+      margin: 25px auto;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      box-shadow: 0 0 15px var(--neon);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #111a33, #0b1224);
+      border-radius: 18px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.5),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 18px;
+      background: linear-gradient(120deg, transparent, rgba(77,166,255,0.25), transparent);
+      opacity: 0.6;
+      filter: blur(6px);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.7),
+        0 0 30px rgba(77,166,255,0.25);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: var(--accent);
+      letter-spacing: 0.3px;
+    }
+
+    .rate-box {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin: 12px 0;
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(124,255,196,0.35);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(77,166,255,0.12);
+      color: var(--neon);
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, #4da6ff, #3b7bff);
+      color: #001027;
+      box-shadow: 0 0 20px rgba(77,166,255,0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 30px rgba(77,166,255,0.7);
+    }
+
+    .btn.alt {
+      background: linear-gradient(135deg, #7cffc4, #42d39f);
+      box-shadow: 0 0 20px rgba(124,255,196,0.45);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .pulse {
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(77,166,255,0.3); }
+      50% { box-shadow: 0 0 30px rgba(77,166,255,0.7); }
+      100% { box-shadow: 0 0 10px rgba(77,166,255,0.3); }
+    }
+
+    .manual {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .manual input {
+      background: #050a16;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #fff;
+      width: 120px;
+    }
+
+    .manual button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: #1b2a52;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-inter">
+<body>
 
-  <!-- HEADER / HERO -->
-  <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-28 relative overflow-hidden">
-    <div class="container mx-auto px-6 text-center">
-      <h1 class="text-5xl md:text-6xl font-montserrat font-bold mb-4">PrimeRand Exchange</h1>
-      <p class="text-xl md:text-2xl mb-8">Trusted Trades, Every Time</p>
-      <a href="https://t.me/+zU0iozk8eJQ2MDM0" target="_blank" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold py-4 px-8 rounded-lg transition shadow-lg">Trade Now on Nicegram</a>
-    </div>
-    <!-- Decorative crypto icons -->
-    <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 opacity-20 flex space-x-6">
-      <img src="https://cdn-icons-png.flaticon.com/512/825/825503.png" alt="crypto" class="w-24 h-24">
-      <img src="https://cdn-icons-png.flaticon.com/512/825/825506.png" alt="crypto" class="w-24 h-24">
-      <img src="https://cdn-icons-png.flaticon.com/512/825/825508.png" alt="crypto" class="w-24 h-24">
-    </div>
-  </header>
+<header>
+  <h1>PrimeRand Exchange</h1>
+  <p>Trusted Trades, Every Time</p>
+  <div class="glow-line"></div>
+</header>
 
-  <!-- RATES SECTION -->
-  <section id="rates" class="py-16 container mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center mb-12">Our Rates</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div class="bg-white shadow-xl rounded-2xl p-6 text-center hover:scale-105 transform transition">
-        <h3 class="text-xl font-semibold mb-2">USDT</h3>
-        <p class="text-gray-600 mb-1">Buy: <span class="font-bold text-green-600">R19.05</span></p>
-        <p class="text-gray-600">Sell: <span class="font-bold text-blue-600">R19.15</span></p>
-      </div>
-      <div class="bg-white shadow-xl rounded-2xl p-6 text-center hover:scale-105 transform transition">
-        <h3 class="text-xl font-semibold mb-2">BTC</h3>
-        <p class="text-gray-600 mb-1">Buy: <span class="font-bold text-green-600">R950,000</span></p>
-        <p class="text-gray-600">Sell: <span class="font-bold text-blue-600">R960,000</span></p>
-      </div>
-      <div class="bg-white shadow-xl rounded-2xl p-6 text-center hover:scale-105 transform transition">
-        <h3 class="text-xl font-semibold mb-2">ETH</h3>
-        <p class="text-gray-600 mb-1">Buy: <span class="font-bold text-green-600">R62,000</span></p>
-        <p class="text-gray-600">Sell: <span class="font-bold text-blue-600">R63,000</span></p>
-      </div>
-      <div class="bg-white shadow-xl rounded-2xl p-6 text-center hover:scale-105 transform transition">
-        <h3 class="text-xl font-semibold mb-2">USDC</h3>
-        <p class="text-gray-600 mb-1">Buy: <span class="font-bold text-green-600">R19.00</span></p>
-        <p class="text-gray-600">Sell: <span class="font-bold text-blue-600">R19.10</span></p>
-      </div>
-    </div>
-    <p class="text-center text-gray-500 mt-6">Rates updated daily. Contact us for large orders.</p>
-  </section>
+<section class="container">
 
-  <!-- HOW TO TRADE / RULES SECTION -->
-  <section id="rules" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">How to Trade Safely</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="flex items-start space-x-4">
-          <div class="text-blue-700 font-bold text-2xl">1</div>
-          <p>Click <strong>Trade Now</strong> to open our private Nicegram channel.</p>
-        </div>
-        <div class="flex items-start space-x-4">
-          <div class="text-blue-700 font-bold text-2xl">2</div>
-          <p>Send a <strong>same-name EFT</strong> to the bank account provided in chat.</p>
-        </div>
-        <div class="flex items-start space-x-4">
-          <div class="text-blue-700 font-bold text-2xl">3</div>
-          <p>Submit your payment proof using our <a href="https://forms.gle/GMuULHC3A1f2XATd8" target="_blank" class="underline text-blue-700 font-semibold">Google Form</a>.</p>
-        </div>
-        <div class="flex items-start space-x-4">
-          <div class="text-blue-700 font-bold text-2xl">4</div>
-          <p>Crypto will be released from escrow after verification of payment.</p>
-        </div>
-      </div>
-      <p class="text-center text-gray-500 mt-6">Always trade safely. Never send crypto first.</p>
+  <!-- Live Rate Card -->
+  <div class="card pulse">
+    <h2>Live USDT Sell Rate (ZAR)</h2>
+    <div class="rate-box" id="sellRate">Loading...</div>
+    <div class="muted">
+      Base USD/ZAR + <strong>4% markup</strong>
     </div>
-  </section>
+    <span class="pill">Auto-updated</span>
 
-  <!-- TESTIMONIALS / VOUCHES -->
-  <section id="testimonials" class="py-16 container mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center mb-12">What Our Traders Say</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-white shadow-xl rounded-2xl p-6 hover:scale-105 transform transition">
-        <p class="text-gray-700 mb-4">“Fast and reliable trades, highly recommend PrimeRand Exchange!”</p>
-        <p class="font-semibold text-blue-700">– Thabo M.</p>
-      </div>
-      <div class="bg-white shadow-xl rounded-2xl p-6 hover:scale-105 transform transition">
-        <p class="text-gray-700 mb-4">“Very professional and trustworthy. My crypto arrived instantly.”</p>
-        <p class="font-semibold text-blue-700">– Lerato N.</p>
-      </div>
-      <div class="bg-white shadow-xl rounded-2xl p-6 hover:scale-105 transform transition">
-        <p class="text-gray-700 mb-4">“Great service, clear rates, and excellent support.”</p>
-        <p class="font-semibold text-blue-700">– Sipho K.</p>
-      </div>
+    <div class="manual">
+      <span class="muted">Manual USD/ZAR:</span>
+      <input type="number" step="0.01" id="manualRate" placeholder="e.g. 18.80"/>
+      <button onclick="applyManual()">Apply</button>
     </div>
-  </section>
+  </div>
 
-  <!-- CONTACT / PAYMENT SLIP FORM -->
-  <section id="contact" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-6 max-w-xl">
-      <h2 class="text-3xl font-bold text-center mb-12">Submit Payment Proof</h2>
-      <iframe src="https://docs.google.com/forms/d/e/GMuULHC3A1f2XATd8/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-      <p class="text-center text-gray-500 mt-4">We verify payments within 30 minutes during business hours.</p>
+  <!-- Trading Rules -->
+  <div class="card">
+    <h2>Trading Rules</h2>
+    <ul class="muted">
+      <li>Minimum trade: <strong>$50</strong></li>
+      <li>Premium daily limit: <strong>$5,000</strong></li>
+      <li>Processing & liquidity fees may apply</li>
+      <li>Crypto released after payment verification</li>
+      <li>Same-name EFTs only</li>
+    </ul>
+    <span class="pill">Secure & Verified</span>
+  </div>
+
+  <!-- Actions -->
+  <div class="card">
+    <h2>Start a Trade</h2>
+    <p class="muted">
+      Submit your trade details and payment proof, then chat with our admin to complete your transaction.
+    </p>
+
+    <div class="cta">
+      <a class="btn" href="https://forms.gle/GMuULHC3A1f2XATd8" target="_blank">
+        Submit Trade Form
+      </a>
+      <a class="btn alt" href="https://t.me/+zU0iozk8eJQ2MDM0" target="_blank">
+        Join Trading Channel
+      </a>
     </div>
-  </section>
+  </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-blue-900 text-white py-8 text-center">
-    <p>&copy; 2026 PrimeRand Exchange. All rights reserved.</p>
-    <p>Join our private channel for trades: <a href="https://t.me/+zU0iozk8eJQ2MDM0" target="_blank" class="underline">PrimeRand Exchange Channel</a></p>
-  </footer>
+</section>
+
+<footer>
+  © 2026 PrimeRand Exchange — Crypto exchange services. Rates subject to market conditions.
+</footer>
+
+<script>
+  const MARKUP = 0.04; // 4%
+
+  async function fetchRate() {
+    try {
+      // Free FX API (no key required usually)
+      const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=ZAR");
+      const data = await res.json();
+
+      const usdZar = data.rates.ZAR;
+      updateSellRate(usdZar);
+
+    } catch (err) {
+      document.getElementById("sellRate").textContent = "Rate unavailable";
+      console.error("FX fetch failed:", err);
+    }
+  }
+
+  function updateSellRate(usdZar) {
+    const sell = usdZar * (1 + MARKUP);
+    document.getElementById("sellRate").textContent =
+      "R " + sell.toFixed(2) + " / USDT";
+  }
+
+  function applyManual() {
+    const manual = parseFloat(document.getElementById("manualRate").value);
+    if (!isNaN(manual)) {
+      updateSellRate(manual);
+    }
+  }
+
+  fetchRate();
+</script>
 
 </body>
 </html>
