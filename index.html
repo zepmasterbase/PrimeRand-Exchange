@@ -157,27 +157,27 @@ const VIP_SPREAD = 0.02;
 const SELL_FEE = 0.05;
 
 let usdZar = 0;
-let cryptoUsd = {USDT:1, USDC:1, BTC:0, ETH:0};
+let cryptoUsd = {USDT:null, USDC:null, BTC:null, ETH:null};
 let currentRole = 'buy';
 
-// Fetch FX and crypto prices
 async function fetchRates(){
   try{
     const fx = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=ZAR");
     const fxData = await fx.json();
     usdZar = fxData.rates.ZAR;
 
-    const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
+    const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,usd-coin&vs_currencies=usd");
     const data = await crypto.json();
     cryptoUsd.BTC = data.bitcoin.usd;
     cryptoUsd.ETH = data.ethereum.usd;
+    cryptoUsd.USDT = data.tether.usd;
+    cryptoUsd.USDC = data["usd-coin"].usd;
 
     updateCalculator();
     updateLiveTable();
   } catch(e){ console.error("Error fetching rates", e);}
 }
 
-// Set Buy/Sell role
 function setRole(role){
   currentRole = role;
   document.getElementById('buyRole').classList.toggle('active', role==='buy');
@@ -200,7 +200,6 @@ function setRole(role){
   updateLiveTable();
 }
 
-// Update calculator
 function updateCalculator(){
   let amt = parseFloat(document.getElementById("amountInput").value);
   if(currentRole==='buy' && (isNaN(amt) || amt < usdZar*MIN_USD)) amt = usdZar*MIN_USD;
@@ -210,66 +209,52 @@ function updateCalculator(){
   const vip = document.getElementById("vipToggle").checked;
   const spread = vip ? VIP_SPREAD : BUY_MARKUP;
 
-  let output = {};
-  if(currentRole==='buy'){
-    output.USDT = amt / (cryptoUsd.USDT*usdZar*(1+spread));
-    output.USDC = amt / (cryptoUsd.USDC*usdZar*(1+spread));
-    output.BTC = amt / (cryptoUsd.BTC*usdZar*(1+spread));
-    output.ETH = amt / (cryptoUsd.ETH*usdZar*(1+spread));
-    document.getElementById("cryptoReceived").innerHTML =
-      `USDT: ${output.USDT.toFixed(4)}<br>`+
-      `USDC: ${output.USDC.toFixed(4)}<br>`+
-      `BTC: ${output.BTC.toFixed(6)}<br>`+
-      `ETH: ${output.ETH.toFixed(6)}`;
-  } else {
-    // Sell: deduct 5%
-    output.USDT = amt*usdZar*(1-SELL_FEE);
-    output.USDC = amt*usdZar*(1-SELL_FEE);
-    output.BTC = amt*usdZar*(1-SELL_FEE);
-    output.ETH = amt*usdZar*(1-SELL_FEE);
-    document.getElementById("cryptoReceived").innerHTML =
-      `USDT: R ${output.USDT.toFixed(2)}<br>`+
-      `USDC: R ${output.USDC.toFixed(2)}<br>`+
-      `BTC: R ${output.BTC.toFixed(2)}<br>`+
-      `ETH: R ${output.ETH.toFixed(2)}`;
+  let html = '';
+  for(let c of ["USDT","USDC","BTC","ETH"]){
+    if(!cryptoUsd[c]){
+      html += `${c}: Loading...<br>`;
+      continue;
+    }
+    if(currentRole==='buy'){
+      let receive = amt / (cryptoUsd[c]*usdZar*(1+spread));
+      html += `${c}: ${receive.toFixed(c==="BTC"||c==="ETH"?6:4)}<br>`;
+    } else {
+      let receive = amt*usdZar*(1-SELL_FEE);
+      html += `${c}: R ${receive.toFixed(2)}<br>`;
+    }
   }
+  document.getElementById("cryptoReceived").innerHTML = html;
 }
 
-// Update Live Rates Table
 function updateLiveTable(){
   const vip = document.getElementById("vipToggle").checked;
   const spread = vip ? VIP_SPREAD : BUY_MARKUP;
   const amt = parseFloat(document.getElementById("amountInput").value);
-
   const tbody = document.getElementById("liveRatesTable");
-  tbody.innerHTML = "";
+  tbody.innerHTML = '';
 
-  ["USDT","USDC","BTC","ETH"].forEach(c=>{
-    let price = cryptoUsd[c] || 1;
-    let primeRate, receive;
-    if(currentRole==='buy'){
-      primeRate = price*usdZar*(1+spread);
-      receive = (amt/primeRate).toFixed(c==="BTC"||c==="ETH"?6:4);
-    } else {
-      primeRate = price*usdZar;
-      receive = (amt*usdZar*(1-SELL_FEE)).toFixed(2);
+  for(let c of ["USDT","USDC","BTC","ETH"]){
+    if(!cryptoUsd[c]){
+      tbody.innerHTML += `<tr><td>${c}</td><td>Loading...</td><td>Loading...</td></tr>`;
+      continue;
     }
+    let primeRate = cryptoUsd[c]*usdZar*(currentRole==='buy'?1+spread:1);
+    let receive = currentRole==='buy'? (amt/primeRate).toFixed(c==="BTC"||c==="ETH"?6:4) : (amt*usdZar*(1-SELL_FEE)).toFixed(2);
     tbody.innerHTML += `<tr>
       <td>${c}</td>
       <td>R ${primeRate.toFixed(2)}</td>
       <td>${receive}</td>
     </tr>`;
-  });
+  }
 }
 
-// Initial fetch and auto-update
+// Initial fetch and auto-refresh
 fetchRates();
-setInterval(fetchRates,30000);
+setInterval(fetchRates, 30000);
 
-// Live input listeners
+// Listeners
 document.getElementById("amountInput").addEventListener("input", updateCalculator);
 document.getElementById("vipToggle").addEventListener("change", updateCalculator);
-
 </script>
 </body>
 </html>
